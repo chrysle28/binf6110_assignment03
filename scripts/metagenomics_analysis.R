@@ -12,42 +12,38 @@ library(vegan)
 library(ggplot2)
 
 ### === 1 | DATA INPUT AND CLEANING ========
-# Import BIOM tables (threshold = 0 and 10) from Kraken2/Bracken classification
-biom_data_10 <- read_biom("bracken_results/table.biom")
-physeq_10 <- import_biom(biom_data_10)
-physeq_10
-
-biom_data_0 <- read_biom("bracken_unfilt_results/table_unfilt.biom")
-physeq_0 <- import_biom(biom_data_0)
-physeq_0
+# Import BIOM tables (threshold = 0) from Kraken2/Bracken classification
+biom_data <- read_biom("../bracken_unfilt_results/table_unfilt.biom")
+physeq <- import_biom(biom_data)
+physeq
 
 # Attach metadata to phyloseq object
 metadata <- data.frame(
-  row.names = sample_names(physeq_0),
+  row.names = sample_names(physeq),
   diet = c("omn", "omn", "omn", "veg", "veg", "veg")
 )
-sample_data(physeq_10) <- metadata
-sample_data(physeq_0) <- metadata
-
-sample_names(physeq_0) <- gsub("_bracken_species", "", sample_names(physeq_0))
+sample_data(physeq) <- metadata
+sample_names(physeq) <- gsub("_bracken_species", "", sample_names(physeq))
+tax_table(physeq) <- gsub("^[a-z]__", "", tax_table(physeq)) # clean taxa names
+colnames(tax_table(physeq)) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
+head(tax_table(physeq))
 
 # Transpose table to make rows = samples
-otu_table_10 <- as.data.frame(t(otu_table(physeq_10)))
-otu_table_10
-rare_curve_10 <- rarecurve(otu_table_10, step = 1)
-
-otu_table_0 <- as.data.frame(t(otu_table(physeq_0)))
-otu_table_0
-rare_curve_0 <- rarecurve(otu_table_0, step = 1)
+otu_table <- as.data.frame(t(otu_table(physeq)))
+head(otu_table)
+#rare_curve_0 <- rarecurve(otu_table, step = 1)
 
 ### === 2 | TAXONOMIC ABUNDANCE ========
 # Convert to relative abundance
 physeq_rel <- transform_sample_counts(physeq, function(x) x / sum(x))
 
+# Filter low abundance taxa
+# physeq_rel_filtered <- filter_taxa(physeq_rel, function(x) mean(x) > 0.01, prune = TRUE)
+
 # Phylum level
-physeq_phy <- tax_glom(physeq_rel, taxrank = "Rank2")
-df <- psmelt(physeq_phy)
-ggplot(df, aes(x = Sample, y = Abundance, fill = Rank2)) +
+physeq_phy <- tax_glom(physeq_rel, taxrank = "Phylum")
+physeq_phy <- psmelt(physeq_phy)
+ggplot(physeq_phy, aes(x = Sample, y = Abundance, fill = Phylum)) +
   geom_bar(stat = "identity", position = "stack") +
   labs(title = "Relative Abundance at Phylum Level",
        x = "Sample",
@@ -55,10 +51,26 @@ ggplot(df, aes(x = Sample, y = Abundance, fill = Rank2)) +
   theme_minimal()
 
 # Genus level
+physeq_gen <- tax_glom(physeq_rel, taxrank = "Genus")
 
 # Species level (top 10 or 15)
+physeq_spe <- tax_glom(physeq_rel, taxrank = "Species")
+top_spe <- names(sort(taxa_sums(physeq_spe), decreasing = T)[1:15])
+physeq_top_spe <- prune_taxa(top_spe, physeq_spe)
+physeq_top_spe <- psmelt(physeq_top_spe)
+physeq_top_spe$Species <- paste(physeq_top_spe$Genus, physeq_top_spe$Species, sep = " ")
 
-# TO-DO make graph prettier and also remove p_, s_ etc.
+ggplot(physeq_top_spe, aes(x = Sample, y = Abundance, fill = Species)) +
+  geom_bar(stat = "identity", position = "stack") +
+  facet_wrap(~ diet, scales = "free_x") +
+  labs(title = "Top 15 Most Abundant Species",
+       x = "Sample",
+       y = "Relative Abundance") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+
+# TO-DO make graph prettier (change font, color palette)
 
 ### === 3 | ALPHA DIVERSITY MEASURES ========
 plot_richness(physeq)
