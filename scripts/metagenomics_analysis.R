@@ -13,12 +13,12 @@ library(ggplot2)
 
 ### === 1 | DATA INPUT AND CLEANING ========
 # Import BIOM tables (threshold = 0 and 10) from Kraken2/Bracken classification
-biom_10_data <- read_biom("table.biom")
-physeq_10 <- import_biom(biom_10_data)
+biom_data_10 <- read_biom("bracken_results/table.biom")
+physeq_10 <- import_biom(biom_data_10)
 physeq_10
 
-biom_0_data <- read_biom("table_unfilt.biom")
-physeq_0 <- import_biom(biom_0_data)
+biom_data_0 <- read_biom("bracken_unfilt_results/table_unfilt.biom")
+physeq_0 <- import_biom(biom_data_0)
 physeq_0
 
 # Attach metadata to phyloseq object
@@ -32,9 +32,13 @@ sample_data(physeq_0) <- metadata
 sample_names(physeq_0) <- gsub("_bracken_species", "", sample_names(physeq_0))
 
 # Transpose table to make rows = samples
-otu_table <- as.data.frame(t(otu_table(physeq)))
-otu_table
-rare_curve <- rarecurve(otu_table, step = 1)
+otu_table_10 <- as.data.frame(t(otu_table(physeq_10)))
+otu_table_10
+rare_curve_10 <- rarecurve(otu_table_10, step = 1)
+
+otu_table_0 <- as.data.frame(t(otu_table(physeq_0)))
+otu_table_0
+rare_curve_0 <- rarecurve(otu_table_0, step = 1)
 
 ### === 2 | TAXONOMIC ABUNDANCE ========
 # Convert to relative abundance
