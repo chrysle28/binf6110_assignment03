@@ -1,0 +1,13 @@
+Sample	Filename	File type	Encoding	Total Sequences	Total Bases	Sequences flagged as poor quality	Sequence length	%GC	total_deduplicated_percentage	avg_sequence_length	median_sequence_length	basic_statistics	per_base_sequence_quality	per_sequence_quality_scores	per_base_sequence_content	per_sequence_gc_content	per_base_n_content	sequence_length_distribution	sequence_duplication_levels	overrepresented_sequences	adapter_content
+omn_1_r1	omn_1_r1.fastq	Conventional base calls	Sanger / Illumina 1.9	31282154.0	4.6 Gbp	0.0	149-150	51.0	72.6149716828815	149.9999587943976	150	pass	pass	pass	warn	pass	pass	warn	pass	pass	pass
+omn_1_r2	omn_1_r2.fastq	Conventional base calls	Sanger / Illumina 1.9	31282154.0	4.6 Gbp	0.0	148-150	51.0	74.71903905814052	149.99992682728944	150	pass	pass	pass	warn	pass	pass	warn	pass	pass	pass
+omn_2_r1	omn_2_r1.fastq	Conventional base calls	Sanger / Illumina 1.9	35602941.0	5.3 Gbp	0.0	150.0	47.0	77.68748635918703	150.0	150	pass	pass	pass	warn	pass	pass	pass	pass	pass	pass
+omn_2_r2	omn_2_r2.fastq	Conventional base calls	Sanger / Illumina 1.9	35602941.0	5.3 Gbp	0.0	150.0	47.0	84.30209444235945	150.0	150	pass	pass	pass	warn	pass	pass	pass	pass	pass	pass
+omn_3_r1	omn_3_r1.fastq	Conventional base calls	Sanger / Illumina 1.9	38662403.0	5.7 Gbp	0.0	149-150	50.0	84.81934491391716	149.99999699966915	150	pass	pass	pass	warn	pass	pass	warn	pass	pass	pass
+omn_3_r2	omn_3_r2.fastq	Conventional base calls	Sanger / Illumina 1.9	38662403.0	5.7 Gbp	0.0	149-150	50.0	89.02675178073878	149.99999738764296	150	pass	pass	pass	warn	pass	pass	warn	pass	pass	pass
+veg_1_r1	veg_1_r1.fastq	Conventional base calls	Sanger / Illumina 1.9	31781865.0	4.7 Gbp	0.0	150.0	52.0	77.91007012838006	150.0	150	pass	pass	pass	warn	warn	pass	pass	pass	pass	pass
+veg_1_r2	veg_1_r2.fastq	Conventional base calls	Sanger / Illumina 1.9	31781865.0	4.7 Gbp	0.0	150.0	52.0	83.97485805130736	150.0	150	pass	pass	pass	warn	warn	pass	pass	pass	pass	pass
+veg_2_r1	veg_2_r1.fastq	Conventional base calls	Sanger / Illumina 1.9	35418839.0	5.3 Gbp	0.0	149-150	56.0	86.64940197220385	149.99999980236507	150	pass	pass	pass	warn	fail	pass	warn	pass	pass	pass
+veg_2_r2	veg_2_r2.fastq	Conventional base calls	Sanger / Illumina 1.9	35418839.0	5.3 Gbp	0.0	150.0	56.0	90.58234884273068	150.0	150	pass	pass	pass	warn	warn	pass	pass	pass	pass	pass
+veg_3_r1	veg_3_r1.fastq	Conventional base calls	Sanger / Illumina 1.9	39235065.0	5.8 Gbp	0.0	149-150	50.0	79.82233720133513	149.99999278706431	150	pass	pass	pass	warn	pass	pass	warn	pass	pass	pass
+veg_3_r2	veg_3_r2.fastq	Conventional base calls	Sanger / Illumina 1.9	39235065.0	5.8 Gbp	0.0	150.0	50.0	87.25555678838552	150.0	150	pass	pass	pass	warn	pass	pass	pass	pass	pass	pass
