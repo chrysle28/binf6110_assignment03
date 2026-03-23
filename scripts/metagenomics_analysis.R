@@ -20,12 +20,12 @@ library(RColorBrewer)
 
 ### === 1 | DATA INPUT AND CLEANING ========
 # Import BIOM table (threshold = 0) from Kraken2/Bracken classification
-biom_data <- read_biom("table.biom")
+biom_data <- read_biom("../table.biom")
 physeq_0 <- import_biom(biom_data)
 physeq_0
 
 # Import BIOM table (threshold = 10) from Kraken2/Bracken classification
-biom_data <- read_biom("table_10.biom")
+biom_data <- read_biom("../table_10.biom")
 physeq_10 <- import_biom(biom_data)
 physeq_10
 
