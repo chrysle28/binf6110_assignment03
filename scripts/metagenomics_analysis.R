@@ -159,6 +159,18 @@ vegan_sb  <- sund2b(vegan_tree, showLabels = TRUE, rootLabel = "Vegan")
 vegan_sb
 htmlwidgets::saveWidget(vegan_sb, "vegan_sb.html")
 
+# Wilcoxon test for Segatella
+physeq_rel_10 <- transform_sample_counts(physeq_10, function(x) x / sum(x)) # Relative abundance of physeq_10
+
+physeq_seg <- subset_taxa(physeq_rel_10, Genus == "Segatella") # Subset Segatella
+df_seg <- psmelt(physeq_seg) %>%
+  group_by(Sample, Diet) %>%
+  summarise(Abundance = sum(Abundance), .groups = "drop")
+
+wilcox.test(Abundance ~ Diet, 
+            data = df_seg)
+# p-value = 1; not statistically significant
+
 ### === 3 | ALPHA DIVERSITY MEASURES ========
 # Unfiltered abundances used to provide more robust estimates of richness
 plot_richness(physeq_0, x = "Diet", measures = c("Observed", "Chao1", "Simpson", "Shannon", "Fisher")) +
@@ -193,9 +205,6 @@ alpha_df
 # None of the measures differ significantly between diet
 
 ### === 4 | BETA DIVERSITY MEASURES ========
-# Relative abundance of physeq_10
-physeq_rel_10 <- transform_sample_counts(physeq_10, function(x) x / sum(x))
-
 # Bray-Curtis PCoA
 pcoa_bray <- ordinate(physeq_rel_10, method = "PCoA", distance = "bray")
 plot_ordination(physeq_rel_10, pcoa_bray, color = "Diet", shape = "Diet") +
