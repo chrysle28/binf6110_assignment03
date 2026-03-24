@@ -187,12 +187,18 @@ plot_richness(physeq_0, x = "Diet", measures = c("Observed", "Chao1", "Simpson",
   scale_fill_manual(values = c("Omnivore" = "#dd1a24", "Vegan" = "#3e8f27")) + 
   scale_color_manual(values = c("Omnivore" = "#dd1a24", "Vegan" = "#3e8f27"))
 
-# Wilcoxon tests for alpha diversity measures
+# Extract statistics of each diversity measure
 alpha_d <- estimate_richness(physeq_0, measures = c("Observed", "Chao1", "Simpson", "Shannon", "Fisher"))
 alpha_d$Diet <- sample_data(physeq_0)$Diet
+alpha_d <- alpha_d %>%
+  group_by(Diet) %>%
+  summarise(across(c(Observed, Chao1, Shannon, Simpson, Fisher),
+                   list(median = median,
+                        min = min,
+                        max = max)))
 
+# Wilcoxon tests for alpha diversity measures
 alpha_measures <- c("Observed", "Chao1", "Simpson", "Shannon", "Fisher")
-
 alpha_results <- lapply(alpha_measures, function(i) {
   test <- wilcox.test(get(i) ~ Diet, data = alpha_d)
   data.frame(Measure = i,
