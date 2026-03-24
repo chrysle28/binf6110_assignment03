@@ -141,9 +141,8 @@ omni_tree <- d3_nest(
     summarise(size = mean(Abundance), .groups = "drop"),
   value_cols = "size"
 )
-omni_tree <- gsub('"name":"root"', '"name":"Omnivore"', omni_tree)
 
-omni_sb  <- sund2b(omni_tree, showLabels = TRUE)
+omni_sb  <- sund2b(omni_tree, showLabels = TRUE, rootLabel = "Omnivore")
 omni_sb
 htmlwidgets::saveWidget(omni_sb, "omni_sb.html")
 
@@ -155,9 +154,8 @@ vegan_tree <- d3_nest(
     summarise(size = mean(Abundance), .groups = "drop"),
   value_cols = "size"
 )
-vegan_tree <- gsub('"name":"root"', '"name":"Vegan"', vegan_tree)
 
-vegan_sb  <- sund2b(vegan_tree, showLabels = TRUE)
+vegan_sb  <- sund2b(vegan_tree, showLabels = TRUE, rootLabel = "Vegan")
 vegan_sb
 htmlwidgets::saveWidget(vegan_sb, "vegan_sb.html")
 
@@ -192,7 +190,7 @@ alpha_results <- lapply(alpha_measures, function(i) {
 
 alpha_df <- do.call(rbind, alpha_results)
 alpha_df
-# none of the measures differ significantly between diet
+# None of the measures differ significantly between diet
 
 ### === 4 | BETA DIVERSITY MEASURES ========
 # Relative abundance of physeq_10
@@ -227,7 +225,7 @@ plot_ordination(physeq_rel_10, nmds_bray, color = "Diet", shape = "Diet") +
 # PERMANOVA test
 set.seed(14)
 adonis2(phyloseq::distance(physeq_rel_10, method = "bray") ~ Diet, data = metadata)
-# non-significant result (p > 0.05)
+# Non-significant result (p > 0.05)
 
 ### === 5 | DIFFERENTIAL ABUNDANCE ========
 ancombc_spe <- tax_glom(physeq_10, taxrank = "Species")
