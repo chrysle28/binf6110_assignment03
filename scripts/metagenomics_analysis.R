@@ -233,7 +233,7 @@ adonis2(phyloseq::distance(physeq_rel_10, method = "bray") ~ Diet, data = metada
 ancombc_spe <- tax_glom(physeq_10, taxrank = "Species")
 taxa_names(ancombc_spe) <- tax_table(physeq_10)[, "Species"]
 
-ancombc <- ancombc2(data = ancombc_spe, fix_formula = "Diet", rand_formula = NULL, p_adj_method = "BH", pseudo_sens = T, prv_cut = 0, lib_cut = 1000, s0_perc = 0.05, group = "Diet", struc_zero = T, neg_lb = T)
+ancombc <- ancombc2(data = ancombc_spe, fix_formula = "Diet", rand_formula = NULL, p_adj_method = "holm", pseudo_sens = T, prv_cut = 0, lib_cut = 1000, s0_perc = 0.05, group = "Diet", struc_zero = T, neg_lb = T)
 
 ancombc_sig <- subset(ancombc$res, q_DietVegan < 0.05)
 ancombc_sig # ANCOM-BC2 returns 0 significant taxa
