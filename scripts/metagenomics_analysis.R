@@ -17,6 +17,7 @@ library(ANCOMBC)
 library(microbiome)
 library(extrafont)
 library(RColorBrewer)
+library(patchwork)
 
 ### === 1 | DATA INPUT AND CLEANING ========
 # Import BIOM table (threshold = 0) from Kraken2/Bracken classification
@@ -213,7 +214,7 @@ alpha_df
 ### === 4 | BETA DIVERSITY MEASURES ========
 # Bray-Curtis PCoA
 pcoa_bray <- ordinate(physeq_rel_10, method = "PCoA", distance = "bray")
-plot_ordination(physeq_rel_10, pcoa_bray, color = "Diet", shape = "Diet") +
+pcoa_plot <- plot_ordination(physeq_rel_10, pcoa_bray, color = "Diet", shape = "Diet") +
   labs(title = "Bray-Curtis PCoA of Omnivores vs Vegans") +
   geom_point(size = 5) +
   theme_minimal() +
@@ -226,7 +227,7 @@ plot_ordination(physeq_rel_10, pcoa_bray, color = "Diet", shape = "Diet") +
 
 # Bray-Curtis NMDS
 nmds_bray <- ordinate(physeq_rel_10, method = "NMDS", distance = "bray")
-plot_ordination(physeq_rel_10, nmds_bray, color = "Diet", shape = "Diet") +
+nmds_plot <- plot_ordination(physeq_rel_10, nmds_bray, color = "Diet", shape = "Diet") +
   labs(title = "Bray-Curtis NMDS of Omnivores vs Vegans") +
   geom_point(size = 5) +
   theme_minimal() +
@@ -236,6 +237,11 @@ plot_ordination(physeq_rel_10, nmds_bray, color = "Diet", shape = "Diet") +
         axis.title.y = element_text(margin = margin(r = 15)),
         strip.text.x = element_text(size = 10)) +
   scale_color_manual(values = c("Omnivore" = "#dd1a24", "Vegan" = "#3e8f27"))
+
+# Plot both together
+(pcoa_plot + plot_spacer() + nmds_plot) +
+  plot_layout(guides = "collect", widths = c(1, 0.1, 1)) &
+  theme(legend.position = "right")
 
 # PERMANOVA test
 set.seed(14)
