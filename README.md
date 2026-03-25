@@ -1,20 +1,14 @@
-[omni_sb.html](https://github.com/user-attachments/files/26198583/omni_sb.html)# Taxonomic classification of shotgun metagnomics data from gut microbiomes of vegans and omnivores
+# Taxonomic classification of shotgun metagnomics data from gut microbiomes of vegans and omnivores
 
 # 1 | Introduction
 
-Goals and Objectives
+In this project, gut metagenomes from Italians with omnivore and vegan diets will be classified, and diversity measures and differential abundance analysis results will be used to explore how gut microbial composition may be affected by diet. 
 
-Gut microbiome importance to human health
-Relation to diets
+The gut microbiome has extensively been proven to play a role in human health (De Filipis et al., 2019; Fassarella et al., 2021), as microbes play functional roles in metabolism, fermentation, and maintenance of gut homeostasis (Fackelmann et al., 2025). Thus, diversity and richness in gut microbial composition directly influences health outcomes (Lozupone et al., 2012). Several factors affect the microbial composition of the gut, but further work needs to be performed to determine how, and in which direction each factor sshifts abundance of species. For example, while diet has been demonstrated to affect the taxonomic composition of microbes (Sonnenburg & Bäckhed, 2016), the extent to which this occurs is still nebulous. As such, mapping taxonomic profiles of gut microbiomes is essential, which is commonly performed through shotgun metagenomics studies. Shotgun metagenomics allows for seuqncing of the entire genomes of all organisms present in a sample (Jovel et al., 2016), which is immensely applicable to investigating the shifts in diversity of microbiota in the gut.
 
-shotgun metagenomics amd taxpnomic profiles
+Importantly, in order to analyze taxonomic profiles of samples, metagenomic sequences first have to be classified. Traditional alignment methods like BLAST can be adapted for metagenomes, though it and other alignment-based algorithms are bottlenecked by slow processing speeds and runtimes (Wood & Salzberg, 2014). Methods that used a kmer-based approach like Kraken2, which requires exact query matches, return the same accuracy and sensitivity as BLAST, but on much faster timescales (Wood & Salzberg, 2014). Moreover, use of Kraken2 with a whole genome database results in high accuracy of species-level assignments when compared to methods like QIIME2 (Terrón-Camero et al., 2022). As such, Kraken2 will be used for taxonomic classficiation of the metagenomes. Afterwards, an abundance re-estimation protocol will be applied to the Kraken classification results using Bracken. Kraken's taxonomy assignments often underestimate the number of reads classified to a species, so Bracken will be used for species-level abundance estimation (Lu et al., 2017).
 
-kraken2 vs deseq
-
-ancombc2 vs aldex
-
-In this project, gut metagenomes from Italians with omnivore and vegan diets will be classified, and diversity measures and differential abundance analysis results will be used to explore how gut microbial composition may be affected by diet.
-
+Once taxonomic classification of the samples is complete, differential abundance analysis can be conducted to determine if, and which, taxa are prevalent in one diet group over the other. Several tools and methods exist for differential abundance testing, from those developed specifically for RNAseq like limma-voom, to compositionally aware methods like ALDEx and ANCOM-BC (Nearing et al., 2022). The latter have been shown to be more conservative approaches with higher precision and a lower false positive rate, making them suitable for inferring taxon abundance (Nearing et al., 2022; Weiss et al., 2017). While ANCOM-BC2 and ALDEx2 show essentially similar performance in sensitivity, specificity, and false discovery rate (Abdelkader et al., 2025), ANCOM-BC2 will be used for this study. This is due to the recent release of ALDEx3, which promises improved performance over ALDEx2, but as this has not been empirically verified, ANCOM-BC2 will be employed as the differential abundance tool.
 
 
 # 2 | Methods
@@ -70,7 +64,7 @@ kraken-biom bracken_results/*.report -o table.biom
 ```
 
 ## 2.4 | Diversity Measures & Differential Abundance
-The full pipeline used to calculate alpha/beta diversity measures and differential abundance is outlined in [metagomics_analysis.R](scripts/metagenomics_analysis.R). Alpha diversity measures (e.g. Observed, Chao1, Simpson, Shannon, Fisher) were computed using phyloseq v3.22 (McMurdie & Holmes, 2013). To ensure that the alpha diversity richness estimates were accurate, the abundance table with rare taxa was used, as these retained singletons. Wilcoxon tests were subsequently performed to test for statistical difference between the two diet groups. For beta diversity and differential abundance, the abundance table filtering out low-abundance taxa was used. Beta diversity was visualized through PCoA and NMDS plots using Bray-Curtis distance. A PERMANOVA was conducted to test for statistical significance. Differential abundance analysis was performed using ANCOMBC v2.12.0 (Lin & Peddada, 2020), with the ANCOMBC-2 function. P-values were adjusted using the default Holm-Bonferroni correction, which controls for false positive rate better than Bonferroni correction (Eichstaedt, Kovatch, & Maroof, 2013).
+The full pipeline used to calculate alpha/beta diversity measures and differential abundance is outlined in [metagomics_analysis.R](scripts/metagenomics_analysis.R). Alpha diversity measures (e.g. Observed, Chao1, Simpson, Shannon, Fisher) were computed using phyloseq v3.22 (McMurdie & Holmes, 2013), and were selected based on the recommendations of Cassol et al. (2025). To ensure that the alpha diversity richness estimates were accurate, the abundance table with rare taxa was used, as these retained singletons. Wilcoxon tests were subsequently performed to test for statistical difference between the two diet groups. For beta diversity and differential abundance, the abundance table filtering out low-abundance taxa was used. Beta diversity was visualized through PCoA and NMDS plots using Bray-Curtis distance. A PERMANOVA was conducted to test for statistical significance. Differential abundance analysis was performed using ANCOMBC v2.12.0 (Lin & Peddada, 2020), with the ANCOMBC-2 function. P-values were adjusted using the default Holm-Bonferroni correction, which controls for false positive rate better than Bonferroni correction (Eichstaedt, Kovatch, & Maroof, 2013).
 
 
 ## 2.5 | Visualization of Results
@@ -87,7 +81,7 @@ A rarefaction curve was used to determine if sampling effort depth was sufficien
 **Figure 1:** Rarefaction curve of sequencing depth versus the number of taxa observed (omnivore samples in red, vegan samples in green).
 
 ## 3.2 | Taxonomic Abundance
-Overall relative abundance of the omnivore and vegan microbiomes reveals a similar global composition, with _Bacteroidota_ and _Bacillota_ being the two main phyla. In both cases, _Bacteroidota_ is the dominant phyla, having an abundance of 50.1% in omnivores, and 40.7% in vegans (Fig. 2, 3). The genus abundances show a similar trend, with _Prevotellaceae_ being the most dominant family in both groups. However, _Prevotellaceae_ is much more abundant in the omnivore group (31.5%) than in the vegan group (15.4%), with the vegan group having a more equal split of families rather than having a purely dominant family. Consequently, the abundances of genera such as _Segatella_, _Phocaeicola_, and _Alistipes_ show a much more even split in the vegan group (Figure 3). Conversely, Segatella makes up 31.3% of genus abundance in omnivores (Figure 1). However, a Wilcoxon test reveals that there is no statistical difference between the two diet groups in terms of Segatella abundance (p-value = 1). Dynamic representations of the sunburst plots can be found at the [omni_sb.html](https://chrysle28.github.io/binf6110_assignment03/omni_sb.html) and [vegan_sb.html](https://chrysle28.github.io/binf6110_assignment03/vegan_sb.html) files.
+Overall relative abundance of the omnivore and vegan microbiomes reveals a similar global composition, with _Bacteroidota_ and _Bacillota_ being the two main phyla. In both cases, _Bacteroidota_ is the dominant phyla, having an abundance of 50.1% in omnivores, and 40.7% in vegans (Fig. 2, 3). The genus abundances show a similar trend, with _Prevotellaceae_ being the most dominant family in both groups. However, _Prevotellaceae_ is much more abundant in the omnivore group (31.5%) than in the vegan group (15.4%), with the vegan group having a more equal split of families rather than having a purely dominant family. Consequently, the abundances of genera such as _Segatella_, _Phocaeicola_, and _Alistipes_ show a much more even split in the vegan group (Figure 3). Conversely, Segatella makes up 31.3% of genus abundance in omnivores (Figure 1). However, a Wilcoxon test reveals that there is no statistical difference between the two diet groups in terms of Segatella abundance (p-value = 1). Dynamic representations of the sunburst plots can be found in the [omni_sb.html](https://chrysle28.github.io/binf6110_assignment03/omni_sb.html) and [vegan_sb.html](https://chrysle28.github.io/binf6110_assignment03/vegan_sb.html) files.
 
 
 <img width="1445" height="776" alt="omni_sb" src="https://github.com/user-attachments/assets/a48cd719-5fa9-4c7c-9d90-0ccbaadc6c24" />
@@ -101,11 +95,11 @@ Overall relative abundance of the omnivore and vegan microbiomes reveals a simil
 Relative abundances of the top 10 most abundant species demonstrate that both groups display variability and diversity in their microbial communities (Fig. 4). On average, the omnivore samples tend to have greater relative abundances than the vegan samples, and also exhibit more shared dominant species across the group. For instance, _Segatella copri_ dominates in 3 out of 5 omnivore samples, while it is only dominant in one vegan sample. Moreover, _Faecalibacterium prausnitzii_, and to a lesser extent, _Alistipes onderdonkii_, are relatively abundant in the omnivore group comapred to the vegan group. Sample omn_2 (SRR8146936) is entirely dominated by _Segatella copri_, while in sample omn_5 (SRR8146970), _Segatella copri_ and _Faecalibacterium prausnitzii_ have relatively high abundances compared to other species. _Bacteroides uniformis_ appears to be more prevalent in the vegan group compared to the omnivore group. The sample veg_1 (SRR8146963) has a relatively high abundance of _Akkermansia muciniphila_, while veg_4 (SRR8146977) has an abundance of _Bacteroides eggerthii_. Overall, each group demonstrates prevalent species within their samples, with _Faecalibacterium prausnitzii_ in omnivores and _Bacteroides uniformis_ in vegans, while still sharing common species. Inter-variablity within the groups does not appear to be high, with similar microbial compositions in omnivore and vegan samples, with the exception of omn_2 and veg_2.
 
 <img width="1331" height="738" alt="rel_abundance" src="https://github.com/user-attachments/assets/b1be420d-dd6c-462a-b5eb-ea6eef4b8413" />
-**Figure 4:** Stacked bar plot of the relative abundances 10 of the most abundant species in omnivore and vegan metagenomes
+**Figure 4:** Stacked bar plot of the relative abundances of the 10 most abundant species in omnivore and vegan metagenomes
 
 
 ## 3.3 | Alpha Diversity
-Alpha diversity metrics separated by diet reveal differences in the species richness and evenness between the two diet groups. In measures of richness (e.g. Observed, Chao1, and Fisher), the omnivore samples have a higher median (295 vs 278, 329 vs 298, 27.5 vs 24.0, respectively) compared to the vegan samples (Fig. 5). The vegan samples also display greater variability, with ranges of 231-311 (Observed), 246-342 (Chao1), and 20-29 (Fisher). Simpson, which measures dominance/evenness, suggests that there is no strong dominance difference between the two groups (omnivore median: 0.875, vegan median: 0.893). Shannon, which combines both richness and evenness, is fairly equal between the two groups (omnivore median: 2.81, vegan median: 2.83). In all measures, the vegan samples show a wider spread compared to the omnivore samples. However, Wilcoxon tests show no statistical significance for any of the results (Table 2).
+Alpha diversity metrics separated by diet reveal differences in the species richness and evenness between the two diet groups. In measures of richness (e.g. Observed, Chao1, and Fisher), the omnivore samples have a higher median (295 vs 278, 329 vs 298, 27.5 vs 24.0, respectively) compared to the vegan samples (Fig. 5). The vegan samples also display greater variability, with ranges of 231-311 (Observed), 246-342 (Chao1), and 20-29 (Fisher). Simpson, which measures dominance/evenness, suggests that there is no strong dominance difference between the two groups (omnivore median: 0.875, vegan median: 0.893). Shannon, which combines both richness and evenness, is fairly equal between the two groups (omnivore median: 2.81, vegan median: 2.83). In all measures, the vegan samples show a wider spread/range compared to the omnivore samples. However, Wilcoxon tests show no statistical significance for any of the results (Table 2).
 
 <img width="1453" height="791" alt="alpha_div" src="https://github.com/user-attachments/assets/ceac833e-44c7-44b7-b4f4-698758004d4b" />
 **Figure 5:** Boxplots of alpha diversity measures (Observed, Chao1, Simpson, Shannon, Fisher) for omnivore (red) and vegan (green) groups, with points representing individual samples
@@ -121,41 +115,48 @@ Alpha diversity metrics separated by diet reveal differences in the species rich
 
 
 ## 3.4 | Beta Diversity
-Beta diversity was visualized using a PCoA plot and an NMDS plot, which both used Bray-Curtis dissimilarity. Omnivore samples appear to be separated along the X-axis, while vegan samples separate along the Y-axis. However, in both cases, there is no clear clustering of samples within groups, nor is there a clear separation of the two diet groups. The PCoA plot 
-
-A PERMANOVA confirmed that diet group did not significantly explain microbial composition (R² = 0.144, p = 0.151).
+Beta diversity was visualized using a PCoA plot and an NMDS plot, which both used Bray-Curtis dissimilarity. Omnivore samples appear to be separated along the X-axis, while vegan samples separate along the Y-axis. However, in both cases, there is no clear clustering of samples within groups, nor is there a clear separation of the two diet groups. Both groups demonstrate considerable within-group variability. There is also considerable overlap of omnivore and vegan samples, as well as one vegan sample clearly separated from the rest of the vegan samples along the X-axis. In the PCoA plot, PC1 explains 39% of the variance, while PC2 explains 15.4%, for a total of 54.4% variance explained. A PERMANOVA confirmed that diet group does not significantly explain the difference in microbial composition (R² = 0.144, p = 0.151).
 
 <img width="1522" height="678" alt="bray_combined" src="https://github.com/user-attachments/assets/42ba1948-a9ac-4ffb-8e07-cc46a8779929" />
 **Figure 6:** PCoA (left) and NMDS (right) plots of Bray-Curtis dissimilarity between omnivore (red circles) and vegan (green triangles) samples
 
 
 ## 3.5 | Differential Abundance
+Differential abundance results from ANCOM-BC2 were visualized as a plot of log fold changes. 20 species with the highest log fold changes were plotted, though ANCOM-BC2 found no statistical significance for any species. The differential abundance plot is domninated by three genera: _Alistipes_ (n = 11), _Bacteroides_ (n = 6), and _Phocaeicola_ (n = 3). _Phocaeicola coprophilus_ showed the highest positive log fold change (i.e. more abundant in vegans) while _Alistipes onderdonkii_ showed the highest negative log fold change (i.e. more abundant in omnivores). Notably, the range of errors shows great variability, with some species (e.g. _Bacteroides eggerthi_, _Alistipes communis_, _Alistipes indistinctus_, _Bacteroides thetaiotamicron_) having a range that extends to the opposite log fold change. 
 
 <img width="1453" height="791" alt="diff_abundance" src="https://github.com/user-attachments/assets/7dbde582-669b-4b73-ad74-e9503d26922c" />
 **Figure 7:** Plot of log fold changes (with error bars) of the top 20 species with the highest log fold change values; no species were statistically significant, q > 0.05)
+
+
 
 # 4 | Discussion
 While diversity measures and differential abundance analysis showed differences in the taxonomic profiles across the two diet groups, none of the results were statistically significant. This is due to the small sample size used for each group (n = 5), as well as the lack of strain-level identification, both of which limited statistical power. As such, any effects (or lack thereof) of diet cannot be confirmed at this sample size. However, the results will still be discussed in context of previous literature.
 
 The omnivore group showed a higher relative abundance of _Segatella_ species compared to the vegan group (Fig. 2, 3, 4), but the results of the Wilcoxon test detected no statistical difference between the two diets. As such, the difference in abundance is likely driven by inter-sample variation within the groups, as supported by omn_2, omn_4, and omn_5 being dominated by _Segatella copri_. De Flilippis et al. (2019) reported the same lack of statistical association between _Segatella copri_ abundance and diet. However, the relative dominance of _Segatella_ compared to _Bacteroides_ (Fig. 2, 3) in both the omnivore and vegan groups has been supported by previous studies (Arumugam et al., 2011). Thus, the presence of _Segatella_ species in both groups likely reflects its role in the degradation of plant fibers (Chen et al., 2017). Although previous studies have found that _Segatella_ abundance shifts depending on diet (Wu et al., 2011), the low sample size used in this study is unable to support this. Inter-individual variabililty of the samples within the chosen dataset is also exemplified by the veg_4 sample (Fig. 4), which shows a high presence of _Bacteroides eggerthii_, in contrast to the other samples which show no or very small abundances of the microbe. _Bacteroides_ species have historically been found to be associated with animal-based diets (David et al., 2014), although recent studies have shown that _Bacteroides eggerthii_ is able to break down complex carbohydrates in dietary fibers (Chen et al., 2025), which aligns with a plant-rich diet. Moreover, _Bacteroides uniformis_, which had higher relative abundance in the vegan samples, produces short-chain fatty acids from degradation of plant-fibers and thus plays a role in regulating gut metabolism (Jia et al., 2023).
 
-Notably, besides the _Prevotella_/_Segatella_ and _Bacteroides_ species, _Faecalibacterium prausnitzii_ displayed greater abundance in the omnivore samples, while in one vegan sample (veg_1), _Akkermansia muciniphila_ was prevalent. Focusing on the former, _Faecalibacterium prausnitzii_, while not particularly associated with any diet, has been found to play a role in gut health via its anti-inflammatory effects (Lopez-Siles et al., 2017). Its potential significant association with a specific diet may provide key insights as to which factors affect its abundance, which have still not been deduced. On the other hand, _Akkermansia muciniphila_
+Notably, besides the _Prevotella_/_Segatella_ and _Bacteroides_ species, _Faecalibacterium prausnitzii_ displayed greater abundance in the omnivore samples, while in one vegan sample (veg_1), _Akkermansia muciniphila_ was prevalent. Focusing on the former, _Faecalibacterium prausnitzii_, while not particularly associated with any diet, has been found to play a role in gut health via its anti-inflammatory effects (Lopez-Siles et al., 2017). Its potential significant association with a specific diet may provide key insights as to which factors affect its abundance, which have still not been deduced. On the other hand, the presence of _Akkermansia muciniphila_, which was prevalent in one of the vegan samples (Fig. 4), is associated with healthy status of the intestine and has been foudn to be differentially abundant in elderly subjects compared to younger ones (Geerlings et al., 2018). As such, the veg_01 sample may reflect an older subject's gut composition. The presence of shared species between the two groups, such as _Alistipes putredinis_ and _Bacteroides eggerthi_ (Fig. 4), may reflect the core biota and functional redundancy observed in human gut microbiota (Lozupone et al., 2012). While taxonomic and functional profiles of gut microbes are related, they are not one and the same, as decreases in microbe diversity do not necessarily translate to impairments in function (Cross et al., 2025). In other words, several species may perform the same function, and a core group of taxa are required for basic metabolic function.
 
-The presence of shared species, particularly () and (), may reflect
+The alpha and beta diversity measures, as well as the differential abundance results showed no statistical significance, which may be attributed to the low sample sizes used. Alternatively, the lack of statistical signifiance could also reflect that diet may not play a big role in differences of microbial gut compositions. While the omnivore group trended towards higher species richness than the vegans, the vegans' maxima tended to be equal to the omninovore's (Fig. 5), suggesting that individual variability may also play a role in the differences in microbial diversity between samples. The non-significance of the Shannon and Simpson measures suggests that both groups had similar distributions of microbes. Visual inspection of the PCoA and NMDS plots (Fig. 6) suggested that omnivores and vegans do not cluster separately, which was confirmed by the PERMANOVA. As such, the beta diversity between the two dietary groups do not differ substantially. As this contradicts previous studies which do find shifts in microbe diversity due to diet (David et al., 2014; Fackelmann et al., 2025; Fassarella et al., 2021; Sonnenburg & Bäckhed, 2016), this results stems from the limited statistical power or individual-level variation that overshadows any dietary-level effects. Differential abundance analysis reported no significant species, but it is still worth noting that some species did exhibit high log fold changes such as _Phocaeicola coprophilus_ and _Alistipes onderdonkii_ (Fig. 7). Moreover, the taxa which exhibited the greatest log fold changes were predominantly _Alistipes_ species, followed by _Bacteroides_, both taxa which are linked with anti-inflammatory mechanisms in the gut (Parker et al., 2020). Interestingly, _Alistipes_ species have also been linked to diseases such as depression and anxiety, with its pathogenic role not yet clearly explored (Parker et al., 2020). Thus, while no interpretations can be made about the differential abundance of each specific species, it is still notable that certain genera are overrepresented in terms of log fold changes.
 
 
 # References
+Abdelkader, A., Ferdous, N. A., El-Hadidi, M., Burzykowski, T., & Mysara, M. (2025). metaGEENOME: an integrated framework for differential abundance analysis of microbiome data in cross-sectional and longitudinal studies. BMC bioinformatics, 26(1), 189.
+
 Arumugam, M., Raes, J., Pelletier, E., Le Paslier, D., Yamada, T., Mende, D. R., ... & Bork, P. (2011). Enterotypes of the human gut microbiome. nature, 473(7346), 174-180.
 
 Bittencourt, S. A. (2010). FastQC: A quality control tool for high throughput sequence data. Babraham Bioinformatics.
 
 Bostock, M., Rodden, K., Warne, K., & Russell, K. (2023). sunburstR: Sunburst 'Htmlwidget'
 
+Cassol, I., Ibañez, M., & Bustamante, J. P. (2025). Key features and guidelines for the application of microbial alpha diversity metrics. Scientific Reports, 15(1), 622.
+
 Chen, L. W., Wu, I. W., Cheng, T. C., Chang, L. C., Hsu, C. K., Yeung, L., ... & Su, S. C. (2025). Hepatoprotective Potential of Bacteroides eggerthii on Fatty Liver Disease: A Mouse Model Study. In Vivo, 39(6), 3226-3235.
 
 Chen, S., Zhou, Y., Chen, Y., & Gu, J. (2018). fastp: an ultra-fast all-in-one FASTQ preprocessor. Bioinformatics, 34(17), i884-i890.
 
 Chen, T., Long, W., Zhang, C., Liu, S., Zhao, L., & Hamaker, B. R. (2017). Fiber-utilizing capacity varies in Prevotella-versus Bacteroides-dominated gut microbiota. Scientific reports, 7(1), 2594.
+
+Cross, K., Beckman, N., Jahnes, B., & Sabree, Z. L. (2025). Microbiome metabolic capacity is buffered against phylotype losses by functional redundancy. Applied and Environmental Microbiology, 91(2), e02368-24.
 
 Dabdoub, S.M. (2016). kraken-biom: Enabling interoperative format conversion for Kraken results (Version 1.2) [Software]
 
@@ -167,7 +168,15 @@ Eichstaedt, K. E., Kovatch, K., & Maroof, D. A. (2013). A less conservative meth
 
 Ewels, P., Magnusson, M., Lundin, S., & Käller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics, 32(19), 3047-3048.
 
+Fackelmann, G., Manghi, P., Carlino, N., Heidrich, V., Piccinno, G., Ricci, L., ... & Segata, N. (2025). Gut microbiome signatures of vegan, vegetarian and omnivore diets and associated health outcomes across 21,561 individuals. Nature microbiology, 10(1), 41-52.
+
+Fassarella, M., Blaak, E. E., Penders, J., Nauta, A., Smidt, H., & Zoetendal, E. G. (2021). Gut microbiome stability and resilience: elucidating the response to perturbations in order to modulate gut health. Gut, 70(3), 595-605.
+
+Geerlings, S. Y., Kostopoulos, I., De Vos, W. M., & Belzer, C. (2018). Akkermansia muciniphila in the human gastrointestinal tract: when, where, and how?. Microorganisms, 6(3), 75.
+
 Jia, B., Zou, Y., Han, X., Bae, J. W., & Jeon, C. O. (2023). Gut microbiome-mediated mechanisms for reducing cholesterol levels: implications for ameliorating cardiovascular disease. Trends in Microbiology, 31(1), 76-91.
+
+Jovel, J., Patterson, J., Wang, W., Hotte, N., O'Keefe, S., Mitchel, T., ... & Wong, G. K. S. (2016). Characterization of the gut microbiome using 16S or shotgun metagenomics. Frontiers in microbiology, 7, 459.
 
 Lin, H., & Peddada, S. D. (2020). Analysis of compositions of microbiomes with bias correction. Nature communications, 11(1), 3514.
 
@@ -175,12 +184,26 @@ Liu, Y., Ghaffari, M. H., Ma, T., & Tu, Y. (2024). Impact of database choice and
 
 Lopez-Siles, M., Duncan, S. H., Garcia-Gil, L. J., & Martinez-Medina, M. (2017). Faecalibacterium prausnitzii: from microbiology to diagnostics and prognostics. The ISME journal, 11(4), 841-852.
 
+Lozupone, C. A., Stombaugh, J. I., Gordon, J. I., Jansson, J. K., & Knight, R. (2012). Diversity, stability and resilience of the human gut microbiota. Nature, 489(7415), 220-230.
+
 Lu, J., Breitwieser, F. P., Thielen, P., & Salzberg, S. L. (2017). Bracken: estimating species abundance in metagenomics data. PeerJ Computer Science, 3, e104.
 
 McMurdie, P. J., & Holmes, S. (2013). phyloseq: an R package for reproducible interactive analysis and graphics of microbiome census data. PloS one, 8(4), e61217.
 
+Nearing, J. T., Douglas, G. M., Hayes, M. G., MacDonald, J., Desai, D. K., Allward, N., ... & Langille, M. G. (2022). Microbiome differential abundance methods produce different results across 38 datasets. Nature communications, 13(1), 342.
+
+Parker, B. J., Wearsch, P. A., Veloo, A. C., & Rodriguez-Palacios, A. (2020). The genus Alistipes: gut bacteria with emerging implications to inflammation, cancer, and mental health. Frontiers in immunology, 11, 906.
+
+Sonnenburg, J. L., & Bäckhed, F. (2016). Diet–microbiota interactions as moderators of human metabolism. Nature, 535(7610), 56-64.
+
+Terrón-Camero, L. C., Gordillo-González, F., Salas-Espejo, E., & Andrés-León, E. (2022). Comparison of metagenomics and metatranscriptomics tools: a guide to making the right choice. Genes, 13(12), 2280.
+
+Weiss, S., Xu, Z. Z., Peddada, S., Amir, A., Bittinger, K., Gonzalez, A., ... & Knight, R. (2017). Normalization and microbial differential abundance strategies depend upon data characteristics. Microbiome, 5(1), 27.
+
 Wickham, H. (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York
 
 Wood, D. E., Lu, J., & Langmead, B. (2019). Improved metagenomic analysis with Kraken 2. Genome biology, 20(1), 257.
+
+Wood, D. E., & Salzberg, S. L. (2014). Kraken: ultrafast metagenomic sequence classification using exact alignments. Genome biology, 15(3), R46.
 
 Wu, G. D., Chen, J., Hoffmann, C., Bittinger, K., Chen, Y. Y., Keilbaugh, S. A., ... & Lewis, J. D. (2011). Linking long-term dietary patterns with gut microbial enterotypes. Science, 334(6052), 105-108.
