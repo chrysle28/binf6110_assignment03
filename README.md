@@ -78,23 +78,30 @@ A rarefaction curve was created during exploratory analysis to check if sequenci
 ## 3.1 | Rarefaction Curve
 A rarefaction curve was used to determine if sampling effort depth was sufficient to capture all possible taxa (Fig. 1). All curves appear to be close to plateauing, suggesting that most rare taxa have already been observed. As such, the number of sequences appear to be enough for accurate estimates of diversity measures.
 
+
+<img width="1331" height="738" alt="rare_curve" src="https://github.com/user-attachments/assets/f6865e57-1841-41a4-86ff-97fbfefb0ffb" />
+
 **Figure 1:** Rarefaction curve of sequencing depth versus the number of taxa observed (omnivore samples in red, vegan samples in green).
+
 
 ## 3.2 | Taxonomic Abundance
 Overall relative abundance of the omnivore and vegan microbiomes reveals a similar global composition, with _Bacteroidota_ and _Bacillota_ being the two main phyla. In both cases, _Bacteroidota_ is the dominant phyla, having an abundance of 50.1% in omnivores, and 40.7% in vegans (Fig. 2, 3). The genus abundances show a similar trend, with _Prevotellaceae_ being the most dominant family in both groups. However, _Prevotellaceae_ is much more abundant in the omnivore group (31.5%) than in the vegan group (15.4%), with the vegan group having a more equal split of families rather than having a purely dominant family. Consequently, the abundances of genera such as _Segatella_, _Phocaeicola_, and _Alistipes_ show a much more even split in the vegan group (Figure 3). Conversely, Segatella makes up 31.3% of genus abundance in omnivores (Figure 1). However, a Wilcoxon test reveals that there is no statistical difference between the two diet groups in terms of Segatella abundance (p-value = 1). Dynamic representations of the sunburst plots can be found in the [omni_sb.html](https://chrysle28.github.io/binf6110_assignment03/omni_sb.html) and [vegan_sb.html](https://chrysle28.github.io/binf6110_assignment03/vegan_sb.html) files.
 
 
 <img width="1445" height="776" alt="omni_sb" src="https://github.com/user-attachments/assets/a48cd719-5fa9-4c7c-9d90-0ccbaadc6c24" />
+
 **Figure 2:** Sunburst plot of the taxonomic abundance of omnivore samples, from phylum (inner ring) to genus level (outer ring)
 
 
 <img width="1448" height="780" alt="vegan_sb" src="https://github.com/user-attachments/assets/eca2aa0b-7be1-4d2e-8cea-928b7b610aff" />
+
 **Figure 3:** Sunburst plot of the taxonomic abundance of vegan samples, from phylum (inner ring) to genus level (outer ring)
 
 
 Relative abundances of the top 10 most abundant species demonstrate that both groups display variability and diversity in their microbial communities (Fig. 4). On average, the omnivore samples tend to have greater relative abundances than the vegan samples, and also exhibit more shared dominant species across the group. For instance, _Segatella copri_ dominates in 3 out of 5 omnivore samples, while it is only dominant in one vegan sample. Moreover, _Faecalibacterium prausnitzii_, and to a lesser extent, _Alistipes onderdonkii_, are relatively abundant in the omnivore group comapred to the vegan group. Sample omn_2 (SRR8146936) is entirely dominated by _Segatella copri_, while in sample omn_5 (SRR8146970), _Segatella copri_ and _Faecalibacterium prausnitzii_ have relatively high abundances compared to other species. _Bacteroides uniformis_ appears to be more prevalent in the vegan group compared to the omnivore group. The sample veg_1 (SRR8146963) has a relatively high abundance of _Akkermansia muciniphila_, while veg_4 (SRR8146977) has an abundance of _Bacteroides eggerthii_. Overall, each group demonstrates prevalent species within their samples, with _Faecalibacterium prausnitzii_ in omnivores and _Bacteroides uniformis_ in vegans, while still sharing common species. Inter-variablity within the groups does not appear to be high, with similar microbial compositions in omnivore and vegan samples, with the exception of omn_2 and veg_2.
 
 <img width="1331" height="738" alt="rel_abundance" src="https://github.com/user-attachments/assets/b1be420d-dd6c-462a-b5eb-ea6eef4b8413" />
+
 **Figure 4:** Stacked bar plot of the relative abundances of the 10 most abundant species in omnivore and vegan metagenomes
 
 
@@ -102,6 +109,7 @@ Relative abundances of the top 10 most abundant species demonstrate that both gr
 Alpha diversity metrics separated by diet reveal differences in the species richness and evenness between the two diet groups. In measures of richness (e.g. Observed, Chao1, and Fisher), the omnivore samples have a higher median (295 vs 278, 329 vs 298, 27.5 vs 24.0, respectively) compared to the vegan samples (Fig. 5). The vegan samples also display greater variability, with ranges of 231-311 (Observed), 246-342 (Chao1), and 20-29 (Fisher). Simpson, which measures dominance/evenness, suggests that there is no strong dominance difference between the two groups (omnivore median: 0.875, vegan median: 0.893). Shannon, which combines both richness and evenness, is fairly equal between the two groups (omnivore median: 2.81, vegan median: 2.83). In all measures, the vegan samples show a wider spread/range compared to the omnivore samples. However, Wilcoxon tests show no statistical significance for any of the results (Table 2).
 
 <img width="1453" height="791" alt="alpha_div" src="https://github.com/user-attachments/assets/ceac833e-44c7-44b7-b4f4-698758004d4b" />
+
 **Figure 5:** Boxplots of alpha diversity measures (Observed, Chao1, Simpson, Shannon, Fisher) for omnivore (red) and vegan (green) groups, with points representing individual samples
 
 | Measure  | W | p-value |
@@ -111,6 +119,7 @@ Alpha diversity metrics separated by diet reveal differences in the species rich
 | Fisher  | 18.0 | 0.310 |
 | Simpson  | 11.0 | 0.841 |
 | Shannon  | 12.0 | 1.00 |
+
 **Table 2:** W and p-values for each Wilcoxon test conducted for an alpha diversity measure
 
 
@@ -118,6 +127,7 @@ Alpha diversity metrics separated by diet reveal differences in the species rich
 Beta diversity was visualized using a PCoA plot and an NMDS plot, which both used Bray-Curtis dissimilarity. Omnivore samples appear to be separated along the X-axis, while vegan samples separate along the Y-axis. However, in both cases, there is no clear clustering of samples within groups, nor is there a clear separation of the two diet groups. Both groups demonstrate considerable within-group variability. There is also considerable overlap of omnivore and vegan samples, as well as one vegan sample clearly separated from the rest of the vegan samples along the X-axis. In the PCoA plot, PC1 explains 39% of the variance, while PC2 explains 15.4%, for a total of 54.4% variance explained. A PERMANOVA confirmed that diet group does not significantly explain the difference in microbial composition (R² = 0.144, p = 0.151).
 
 <img width="1522" height="678" alt="bray_combined" src="https://github.com/user-attachments/assets/42ba1948-a9ac-4ffb-8e07-cc46a8779929" />
+
 **Figure 6:** PCoA (left) and NMDS (right) plots of Bray-Curtis dissimilarity between omnivore (red circles) and vegan (green triangles) samples
 
 
@@ -125,6 +135,7 @@ Beta diversity was visualized using a PCoA plot and an NMDS plot, which both use
 Differential abundance results from ANCOM-BC2 were visualized as a plot of log fold changes. 20 species with the highest log fold changes were plotted, though ANCOM-BC2 found no statistical significance for any species. The differential abundance plot is domninated by three genera: _Alistipes_ (n = 11), _Bacteroides_ (n = 6), and _Phocaeicola_ (n = 3). _Phocaeicola coprophilus_ showed the highest positive log fold change (i.e. more abundant in vegans) while _Alistipes onderdonkii_ showed the highest negative log fold change (i.e. more abundant in omnivores). Notably, the range of errors shows great variability, with some species (e.g. _Bacteroides eggerthi_, _Alistipes communis_, _Alistipes indistinctus_, _Bacteroides thetaiotamicron_) having a range that extends to the opposite log fold change. 
 
 <img width="1453" height="791" alt="diff_abundance" src="https://github.com/user-attachments/assets/7dbde582-669b-4b73-ad74-e9503d26922c" />
+
 **Figure 7:** Plot of log fold changes (with error bars) of the top 20 species with the highest log fold change values; no species were statistically significant, q > 0.05)
 
 
